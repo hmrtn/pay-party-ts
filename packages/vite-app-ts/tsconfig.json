@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "types": [
-      // "vite/client",
+      "vite/client",
       // "node",
       // "ethers",
       // "@ethersproject/providers",
@@ -38,7 +38,7 @@
       "~~/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/helpers/__global.ts"],
+  "include": ["src", "src/helpers/__global.ts", "env.d.ts"],
   "exclude": [
     "**/node_modules",
     ".husky",

@@ -1,2 +1,2 @@
 export * from './getNetworkInfo';
-export * from './utils/ipfsHttpService'
+export * from './utils/ipfsService';

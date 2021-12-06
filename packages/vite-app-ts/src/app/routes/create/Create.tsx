@@ -25,7 +25,7 @@ import { useContractLoader, useContractReader, useEventListener, useGasPrice } f
 import { YourContract } from '~~/generated/contract-types';
 import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
 import { EthComponentsSettingsContext } from 'eth-components/models';
-import IpfsHttpService from '~~/helpers/utils/ipfsHttpService';
+import InfuraIpfsService from '~~/helpers/utils/ipfsService';
 
 export interface CreateProps {
   mainnetProvider: StaticJsonRpcProvider;
@@ -65,8 +65,8 @@ export const Create: FC<CreateProps> = (props) => {
   const onFinish = async (values: any) => {
     console.log('Success:', values);
 
-    const ipfs = new IpfsHttpService();
-    console.log(ipfs.cat('https://ipfs.infura.io:5001/api/v0/cat', 'Qmb4EN4SrTLJtoXnoY4gTnEdWhfsnGp1GuJEEjMyRxKnac'));
+    const ipfs = new InfuraIpfsService();
+    console.log(ipfs.cat('Qmb4EN4SrTLJtoXnoY4gTnEdWhfsnGp1GuJEEjMyRxKnac'));
   };
 
   const onFinishFailed = (errorInfo: any) => {
