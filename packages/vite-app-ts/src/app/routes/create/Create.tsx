@@ -26,6 +26,7 @@ import { YourContract } from '~~/generated/contract-types';
 import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
 import { EthComponentsSettingsContext } from 'eth-components/models';
 import InfuraIpfsService from '~~/helpers/utils/ipfsService';
+import MongoDBService from '~~/helpers/utils/mongodbService';
 
 export interface CreateProps {
   mainnetProvider: StaticJsonRpcProvider;
@@ -64,9 +65,8 @@ export const Create: FC<CreateProps> = (props) => {
 
   const onFinish = async (values: any) => {
     console.log('Success:', values);
-
-    const ipfs = new InfuraIpfsService();
-    console.log(ipfs.cat('Qmb4EN4SrTLJtoXnoY4gTnEdWhfsnGp1GuJEEjMyRxKnac'));
+    const db = new MongoDBService();
+    console.log(db.test());
   };
 
   const onFinishFailed = (errorInfo: any) => {
