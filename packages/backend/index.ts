@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { connectToDatabase } from "./services/database.service";
-import { partiesRouter } from "./routes/party.router";
+import { partyRouter } from "./routes/party.router";
 
 const app = express();
 const port = 8080; // default port to listen
@@ -12,8 +12,7 @@ connectToDatabase()
       cors({
         origin: function (origin, callback) {
           const validPatternRegexes = [
-            // /^(.*)qd-web-staging.herokuapp.com(\/(.*)|)$/,
-            // /^(www.|)qd-web-staging.herokuapp.com(\/(.*)|)$/,
+            // TODO: Add other hosts to valid patterns
             /^http:\/\/localhost:[0-9]{4}$/,
           ];
           if (validPatternRegexes.some((rx) => rx.test(origin)) || !origin) {
@@ -26,7 +25,7 @@ connectToDatabase()
     );
 
     // send all calls to /parties to our partyRouter
-    app.use("/parties", partiesRouter);
+    app.use("/party", partyRouter);
 
     // start the Express server
     app.listen(port, () => {

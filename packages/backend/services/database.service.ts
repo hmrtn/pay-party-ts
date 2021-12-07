@@ -24,15 +24,15 @@ export async function connectToDatabase() {
   await applySchemaValidation(db);
 
   // Connect to the collection with the specific name from .env, found in the database previously specified
-  const partiesCollection: mongoDB.Collection = db.collection(
+  const partyCollection: mongoDB.Collection = db.collection(
     process.env.PARTIES_COLLECTION_NAME
   );
 
-  // Persist the connection to the Games collection
-  collections.parties = partiesCollection;
+  // Persist the connection to the party collection
+  collections.parties = partyCollection;
 
   console.log(
-    `Successfully connected to database: ${db.databaseName} and collection: ${partiesCollection.collectionName}`
+    `Successfully connected to database: ${db.databaseName} and collection: ${partyCollection.collectionName}`
   );
 }
 // Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Game model, even if added elsewhere.
@@ -41,7 +41,7 @@ async function applySchemaValidation(db: mongoDB.Db) {
   const jsonSchema = {
     $jsonSchema: {
       bsonType: "object",
-      required: ["name", "price", "category"],
+      required: ["name", "desc"],
       additionalProperties: false,
       properties: {
         _id: {},
@@ -49,13 +49,21 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: "string",
           description: "'name' is required and is a string",
         },
-        price: {
-          bsonType: "number",
-          description: "'price' is required and is a number",
-        },
-        category: {
+        desc: {
           bsonType: "string",
-          description: "'category' is required and is a string",
+          description: "'desc' is required and is a string",
+        },
+        fundAmount: {
+          bsonType: "number",
+          description: "'fundAmount' is a number",
+        },
+        fundType: {
+          bsonType: "string",
+          description: "'fundType' is a string",
+        },
+        strategy: {
+          bsonType: "string",
+          description: "'strategy' is a string",
         },
       },
     },

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-
-export default class HttpService {
+// This helper class is meant to serve as a simple and flexible HTTP service
+export default class HttpController {
   async get(
     baseURL: string,
     endpoint?: string,
@@ -22,10 +22,6 @@ export default class HttpService {
     const options = {
       params,
       headers,
-      auth: {
-        username: import.meta.env.VITE_APP_INFURA_IPFS_PROJECT_ID,
-        password: import.meta.env.VITE_APP_INFURA_IPFS_PROJECT_KEY,
-      },
     };
     if (asFormEncoded && body) {
       const bodyParams = new URLSearchParams();
@@ -34,6 +30,7 @@ export default class HttpService {
       }
       body = bodyParams;
     }
+    console.log('httpController.post');
     return axios.post(url, body, options);
   }
 }

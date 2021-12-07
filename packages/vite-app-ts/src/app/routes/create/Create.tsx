@@ -1,32 +1,8 @@
-import { SyncOutlined } from '@ant-design/icons';
-import { formatEther, parseEther } from '@ethersproject/units';
-import {
-  Button,
-  Form,
-  Checkbox,
-  Card,
-  Tag,
-  DatePicker,
-  Divider,
-  Input,
-  List,
-  Progress,
-  Slider,
-  Spin,
-  Switch,
-} from 'antd';
-import { Signer, Contract } from 'ethers';
-import React, { useState, FC, useContext } from 'react';
-import { Address, Balance } from 'eth-components/ant';
-import { transactor, TTransactor } from 'eth-components/functions';
+import { Button, Form, Card, Input, Select, InputNumber } from 'antd';
+import { FC } from 'react';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { useEthersContext } from 'eth-hooks/context';
-import { useContractLoader, useContractReader, useEventListener, useGasPrice } from 'eth-hooks';
-import { YourContract } from '~~/generated/contract-types';
-import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
-import { EthComponentsSettingsContext } from 'eth-components/models';
-import InfuraIpfsService from '~~/helpers/utils/ipfsService';
-import MongoDBService from '~~/helpers/utils/mongodbService';
+import MongoDBController from '~~/controllers/mongodbController';
+const { Option } = Select;
 
 export interface CreateProps {
   mainnetProvider: StaticJsonRpcProvider;
@@ -35,38 +11,19 @@ export interface CreateProps {
 }
 
 export const Create: FC<CreateProps> = (props) => {
-  const [newPurpose, setNewPurpose] = useState('loading...');
-  const ethersContext = useEthersContext();
-
-  const appContractConfig = useAppContracts();
-  const readContracts = useContractLoader(appContractConfig);
-  const writeContracts = useContractLoader(appContractConfig, ethersContext?.signer);
-
-  const yourContractRead = readContracts['YourContract'] as YourContract;
-  const yourContractWrite = writeContracts['YourContract'] as YourContract;
-  const purpose = useContractReader<string>(yourContractRead, {
-    contractName: 'YourContract',
-    functionName: 'purpose',
-  });
-  const setPurposeEvents = useEventListener(yourContractRead, 'SetPurpose', 1);
-
-  const signer = ethersContext.signer;
-  const address = ethersContext.account ?? '';
-
-  const ethComponentsSettings = useContext(EthComponentsSettingsContext);
-  const gasPrice = useGasPrice(ethersContext.chainId, 'fast');
-  const tx = transactor(ethComponentsSettings, ethersContext?.signer, gasPrice);
-
-  const { mainnetProvider, yourCurrentBalance, price } = props;
-
-  type Options = {
-    url: string;
+  const handleStrategyChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+  const handleTypeChange = (value: string) => {
+    console.log(`selected ${value}`);
   };
 
   const onFinish = async (values: any) => {
     console.log('Success:', values);
-    const db = new MongoDBService();
+    const db = new MongoDBController();
     console.log(db.test());
+    const testObj = values;
+    console.log(db.newParty(values));
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -76,7 +33,7 @@ export const Create: FC<CreateProps> = (props) => {
   return (
     <div style={{ padding: 24 }}>
       <div>
-        <Card title="Create Pay Party" style={{ width: '30vw' }}>
+        <Card title="Create Party" style={{ width: '30vw' }}>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
@@ -90,6 +47,22 @@ export const Create: FC<CreateProps> = (props) => {
             </Form.Item>
             <Form.Item label="Description" name="desc" rules={[{ required: true, message: 'Description Required.' }]}>
               <Input />
+            </Form.Item>
+            <Form.Item label="Funding" name="fundAmount" rules={[{ required: true, message: 'Funding Required.' }]}>
+              <InputNumber />
+            </Form.Item>
+            <Form.Item label="Type" name="fundType" rules={[{ required: true, message: 'Funding Type Required.' }]}>
+              <Select style={{ width: 120 }} onChange={handleTypeChange}>
+                <Option value="ETH">ETH</Option>
+                <Option value="DAI">DAI</Option>
+                <Option value="GTC">GTC</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item label="Strategy" name="strategy" rules={[{ required: true, message: 'Strategy Required.' }]}>
+              <Select style={{ width: 120 }} onChange={handleStrategyChange}>
+                <Option value="Linear">Linear</Option>
+                <Option value="Quadratic">Quadratic</Option>
+              </Select>
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit">

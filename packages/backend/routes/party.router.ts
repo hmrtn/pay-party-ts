@@ -1,14 +1,13 @@
 import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
-import Party from "../models/parties";
+import Party from "../models/party.model";
 
-export const partiesRouter = express.Router();
+export const partyRouter = express.Router();
 
-partiesRouter.use(express.json());
+partyRouter.use(express.json());
 
-partiesRouter.get("/", async (_req: Request, res: Response) => {
-  console.log("HERE");
+partyRouter.get("/", async (_req: Request, res: Response) => {
   try {
     // Call find with an empty filter object, meaning it returns all documents in the collection. Saves as party array to take advantage of types
     const parties = (await collections.parties
@@ -21,8 +20,8 @@ partiesRouter.get("/", async (_req: Request, res: Response) => {
   }
 });
 
-// Example route: http://localhost:8080/parties/610aaf458025d42e7ca9fcd0
-partiesRouter.get("/:id", async (req: Request, res: Response) => {
+// Example route: http://localhost:8080/party/610aaf458025d42e7ca9fcd0
+partyRouter.get("/:id", async (req: Request, res: Response) => {
   const id = req?.params?.id;
 
   try {
@@ -42,8 +41,10 @@ partiesRouter.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
-partiesRouter.post("/", async (req: Request, res: Response) => {
+partyRouter.post("/", async (req: Request, res: Response) => {
+  console.log("partyRouter POST!");
   try {
+    console.log(req.body);
     const newParty = req.body as Party;
     const result = await collections.parties.insertOne(newParty);
 
@@ -58,7 +59,7 @@ partiesRouter.post("/", async (req: Request, res: Response) => {
   }
 });
 
-partiesRouter.put("/:id", async (req: Request, res: Response) => {
+partyRouter.put("/:id", async (req: Request, res: Response) => {
   const id = req?.params?.id;
 
   try {
@@ -78,7 +79,7 @@ partiesRouter.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-partiesRouter.delete("/:id", async (req: Request, res: Response) => {
+partyRouter.delete("/:id", async (req: Request, res: Response) => {
   const id = req?.params?.id;
 
   try {

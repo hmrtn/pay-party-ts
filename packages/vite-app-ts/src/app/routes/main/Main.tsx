@@ -84,7 +84,7 @@ export const Main: FC = () => {
   // Hooks use and examples
   // -----------------------------
   // 🎉 Console logs & More hook examples:  Check out this to see how to get
-  useScaffoldHooksExamples(scaffoldAppProviders, readContracts, writeContracts, mainnetContracts);
+  // useScaffoldHooksExamples(scaffoldAppProviders, readContracts, writeContracts, mainnetContracts);
 
   // -----------------------------
   // .... 🎇 End of examples
