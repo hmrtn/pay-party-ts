@@ -17,4 +17,8 @@ export default class MongoDBController {
     const url = 'http://localhost:8080/party';
     return this.http.get(url);
   }
+  async fetchParty(id: string): Promise<AxiosResponse> {
+    const url = `http://localhost:8080/party/${id}`;
+    return this.http.get(url);
+  }
 }
