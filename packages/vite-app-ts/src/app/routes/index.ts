@@ -5,3 +5,4 @@ import { lazier } from 'eth-hooks/helpers';
 
 export const Home = lazier(() => import('./home/Home'), 'Home');
 export const Create = lazier(() => import('./create/Create'), 'Create');
+export const Party = lazier(() => import('./party/Party'), 'Party');
