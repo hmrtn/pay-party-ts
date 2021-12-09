@@ -1,4 +1,4 @@
-import { Button, Form, Card, Input, Select, InputNumber } from 'antd';
+import { Button, Form, Card, Input, Select, InputNumber, Space } from 'antd';
 import { FC } from 'react';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
@@ -18,22 +18,27 @@ export const Create: FC<CreateProps> = (props) => {
     console.log(`selected ${value}`);
   };
 
+  interface Ballot {}
+  interface Voter {
+    address: string;
+    ballot: Ballot;
+  }
+
   const onFinish = async (values: any) => {
     console.log('Success:', values);
+    const votersStruct = {};
     const db = new MongoDBController();
-    console.log(db.test());
-    const testObj = values;
-    console.log(db.newParty(values));
+    db.newParty(values);
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+  const onFinishFailed = (err: any) => {
+    console.log('Failed:', err);
   };
 
   return (
     <div style={{ padding: 24 }}>
-      <div>
-        <Card title="Create Party" style={{ width: '30vw' }}>
+      <Space align="center">
+        <Card title="Create Party" style={{ minWidth: '324px', maxWidth: '800px', width: '80vw' }}>
           <Form
             name="basic"
             labelCol={{ span: 8 }}
@@ -71,7 +76,7 @@ export const Create: FC<CreateProps> = (props) => {
             </Form.Item>
           </Form>
         </Card>
-      </div>
+      </Space>
     </div>
   );
 };

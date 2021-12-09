@@ -33,12 +33,8 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
     <>
       <div>
         <PageHeader
-          title="pay.party"
-          subTitle={
-            <span>
-              v2.0.0
-            </span>
-          }
+          title={import.meta.env.VITE_APP_NAME}
+          subTitle={<span>{import.meta.env.VITE_APP_VERSION}</span>}
           style={{ cursor: 'pointer' }}
         />
       </div>

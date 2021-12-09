@@ -20,7 +20,7 @@ export const MainPageMenu: FC<IMainPageMenuProps> = (props) => (
           props.setRoute('/');
         }}
         to="/">
-        YourContract
+        Distributor
       </Link>
     </Menu.Item>
     <Menu.Item key="/home">

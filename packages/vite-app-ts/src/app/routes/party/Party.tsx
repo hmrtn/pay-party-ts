@@ -1,6 +1,6 @@
-import { Card, Space } from 'antd';
+import { Button, Card, Space } from 'antd';
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { transactor } from 'eth-components/functions';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { useEthersContext } from 'eth-hooks/context';
@@ -13,9 +13,11 @@ export interface PartyProps {
   yourCurrentBalance: any;
   price: number;
   setRoute: React.Dispatch<React.SetStateAction<string>>;
+  readContracts: any;
 }
 
 export const Party: FC<PartyProps> = (props) => {
+  const { id } = useParams<{ id: string }>();
   const ethersContext = useEthersContext();
 
   const ethComponentsSettings = useContext(EthComponentsSettingsContext);
@@ -39,16 +41,42 @@ export const Party: FC<PartyProps> = (props) => {
       });
   }, []);
 
-  // URL hook for elections reload
-  const history = useHistory();
-  const { id } = useParams<{ id: string }>();
-  console.log(id);
+  const vote = async () => {
+    // EIP 712
+    const domain = {
+      name: import.meta.env.VITE_APP_NAME,
+      version: '1',
+      chainId: ethersContext.chainId,
+      verifyingContract: props.readContracts.Distributor.address,
+    };
+
+    const types = {
+      Vote: [
+        { name: 'from', type: 'User' },
+        { name: 'ballot', type: 'string' },
+      ],
+      User: [{ name: 'wallet', type: 'address' }],
+    };
+
+    const ballot = {
+      from: {
+        wallet: '0x1111111111111111111111111111111111111100',
+      },
+      ballot: JSON.stringify({ addr1: 1, addr2: 5, addr3: 3 }),
+    };
+    // End EIP 712
+
+    // EIP-712 Typed Data
+    // See: https://eips.ethereum.org/EIPS/eip-712
+    const sig = ethersContext.signer?._signTypedData(domain, types, ballot);
+  };
 
   return (
     <div style={{ padding: 24 }}>
       <Space align="center">
         <Card title={id} loading={loading} style={{ minWidth: '324px', maxWidth: '80vw', width: '80vw' }}>
           {JSON.stringify(data)}
+          <Button onClick={vote}>Vote Sign Test</Button>
         </Card>
       </Space>
     </div>

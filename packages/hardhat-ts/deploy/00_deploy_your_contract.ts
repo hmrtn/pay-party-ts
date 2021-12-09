@@ -6,7 +6,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironmentExtended) => {
   const { getNamedAccounts, deployments } = hre as any;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  await deploy('YourContract', {
+  await deploy('Distributor', {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: ["Hello"],
@@ -22,7 +22,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironmentExtended) => {
   */
 };
 export default func;
-func.tags = ['YourContract'];
+func.tags = ['Distributor'];
 
 /*
 Tenderly verification

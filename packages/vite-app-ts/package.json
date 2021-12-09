@@ -41,7 +41,7 @@
     "eth-components": "2.2.0",
     "eth-hooks": "3.4.0",
     "ethereum-cryptography": "^0.1.3",
-    "ethers": "^5.4.1",
+    "ethers": "5.4.1",
     "fortmatic": "^2.2.1",
     "graphiql": "^1.4.2",
     "graphql": "^15.6.1",

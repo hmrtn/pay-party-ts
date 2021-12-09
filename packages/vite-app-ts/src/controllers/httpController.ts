@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-// This helper class is meant to serve as a simple and flexible HTTP service
+// This helper class is meant to serve as a flexible HTTP service
 export default class HttpController {
   async get(
     baseURL: string,
@@ -32,5 +32,18 @@ export default class HttpController {
     }
     console.log('httpController.post');
     return axios.post(url, body, options);
+  }
+  async put(
+    baseURL: string,
+    data?: any, // object!
+    params?: { [key: string]: any },
+    headers?: { [key: string]: any }
+  ): Promise<AxiosResponse> {
+    const url = baseURL;
+    const options = {
+      params,
+      headers,
+    };
+    return axios.put(url, data, options);
   }
 }

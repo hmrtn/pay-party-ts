@@ -14,7 +14,6 @@ export async function connectToDatabase() {
     process.env.DB_CONN_STRING
   );
 
-  // Connect to the cluster
   await client.connect();
 
   // Connect to the database with the name specified in .env
@@ -23,7 +22,6 @@ export async function connectToDatabase() {
   // Apply schema validation to the collection
   await applySchemaValidation(db);
 
-  // Connect to the collection with the specific name from .env, found in the database previously specified
   const partyCollection: mongoDB.Collection = db.collection(
     process.env.PARTIES_COLLECTION_NAME
   );
@@ -36,7 +34,6 @@ export async function connectToDatabase() {
   );
 }
 // Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Game model, even if added elsewhere.
-// For more information about schema validation, see this blog series: https://www.mongodb.com/blog/post/json-schema-validation--locking-down-your-model-the-smart-way
 async function applySchemaValidation(db: mongoDB.Db) {
   const jsonSchema = {
     $jsonSchema: {
@@ -45,6 +42,7 @@ async function applySchemaValidation(db: mongoDB.Db) {
       additionalProperties: false,
       properties: {
         _id: {},
+        version: "string",
         name: {
           bsonType: "string",
           description: "'name' is required and is a string",

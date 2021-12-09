@@ -21,8 +21,10 @@ import { subgraphUri } from '~~/config/subgraphConfig';
 import { useEthersContext } from 'eth-hooks/context';
 import { NETWORKS } from '~~/models/constants/networks';
 import { mainnetProvider } from '~~/config/providersConfig';
-import { YourContract } from '~~/generated/contract-types';
+import { Distributor } from '~~/generated/contract-types';
 import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
+import MongoDBController from '~~/controllers/mongodbController';
+import { Party } from '../party/Party';
 
 export const DEBUG = false;
 
@@ -62,15 +64,15 @@ export const Main: FC = () => {
   // -----------------------------
   // example for current contract and listners
   // -----------------------------
-  const yourContractRead = readContracts['YourContract'] as YourContract;
+  const distributorRead = readContracts['Distributor'] as Distributor;
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader<string>(yourContractRead, {
-    contractName: 'YourContract',
+  const purpose = useContractReader<string>(distributorRead, {
+    contractName: 'Distributor',
     functionName: 'purpose',
   });
 
   // 📟 Listen for broadcast events
-  const setPurposeEvents = useEventListener(yourContractRead, 'SetPurpose', 1);
+  // const setPurposeEvents = useEventListener(distributorRead, 'SetPurpose', 1);
 
   // For more hooks, check out 🔗eth-hooks at: https://www.npmjs.com/package/eth-hooks
 
@@ -94,6 +96,8 @@ export const Main: FC = () => {
   useEffect(() => {
     setRoute(window.location.pathname);
   }, [setRoute]);
+
+  // DB Controller
 
   return (
     <div className="App">
@@ -121,6 +125,15 @@ export const Main: FC = () => {
               mainnetProvider={scaffoldAppProviders.mainnetProvider}
               yourCurrentBalance={yourCurrentBalance}
               price={ethPrice}
+            />
+          </Route>
+          <Route path="/party/:id">
+            <Party
+              mainnetProvider={scaffoldAppProviders.mainnetProvider}
+              yourCurrentBalance={yourCurrentBalance}
+              price={ethPrice}
+              setRoute={setRoute}
+              readContracts={readContracts}
             />
           </Route>
         </Switch>
