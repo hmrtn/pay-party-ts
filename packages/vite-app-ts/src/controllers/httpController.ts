@@ -30,7 +30,6 @@ export default class HttpController {
       }
       body = bodyParams;
     }
-    console.log('httpController.post');
     return axios.post(url, body, options);
   }
   async put(

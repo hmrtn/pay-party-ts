@@ -42,7 +42,6 @@ async function applySchemaValidation(db: mongoDB.Db) {
       additionalProperties: false,
       properties: {
         _id: {},
-        version: "string",
         name: {
           bsonType: "string",
           description: "'name' is required and is a string",
@@ -62,6 +61,10 @@ async function applySchemaValidation(db: mongoDB.Db) {
         strategy: {
           bsonType: "string",
           description: "'strategy' is a string",
+        },
+        participants: {
+          bsonType: "string",
+          description: "'participants' is a comma seperated string",
         },
       },
     },

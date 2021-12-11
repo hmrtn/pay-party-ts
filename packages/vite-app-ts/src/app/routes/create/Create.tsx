@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
 const { Option } = Select;
+const { TextArea } = Input;
 
 export interface CreateProps {
   mainnetProvider: StaticJsonRpcProvider;
@@ -25,7 +26,7 @@ export const Create: FC<CreateProps> = (props) => {
   }
 
   const onFinish = async (values: any) => {
-    console.log('Success:', values);
+    console.log(values);
     const votersStruct = {};
     const db = new MongoDBController();
     db.newParty(values);
@@ -48,13 +49,13 @@ export const Create: FC<CreateProps> = (props) => {
             onFinishFailed={onFinishFailed}
             autoComplete="off">
             <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Name Required.' }]}>
-              <Input />
+              <Input placeholder="Party Name" />
             </Form.Item>
             <Form.Item label="Description" name="desc" rules={[{ required: true, message: 'Description Required.' }]}>
-              <Input />
+              <TextArea rows={3} placeholder="Describe the party" />
             </Form.Item>
             <Form.Item label="Funding" name="fundAmount" rules={[{ required: true, message: 'Funding Required.' }]}>
-              <InputNumber />
+              <InputNumber placeholder="0.01" />
             </Form.Item>
             <Form.Item label="Type" name="fundType" rules={[{ required: true, message: 'Funding Type Required.' }]}>
               <Select style={{ width: 120 }} onChange={handleTypeChange}>
@@ -68,6 +69,12 @@ export const Create: FC<CreateProps> = (props) => {
                 <Option value="Linear">Linear</Option>
                 <Option value="Quadratic">Quadratic</Option>
               </Select>
+            </Form.Item>
+            <Form.Item
+              label="Participants"
+              name="participants"
+              rules={[{ required: true, message: 'Particpant(s) Required.' }]}>
+              <TextArea rows={3} placeholder="Address/ENS" />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit">

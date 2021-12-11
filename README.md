@@ -1,125 +1,43 @@
-# 🏗 Scaffold-Eth Typescript
+# pay.party
 
-## Typescript
+![](https://i.imgur.com/FthDZz5.png)
 
-This is the typescript repo of scaffold.eth. The directories that you'll use are:
 
-```bash
-packages/vite-app-ts/
-packages/hardhat-ts/
-```
+## Summary
 
-## Quick Start
+**pay.party** is a tool used to distribute compensation to team members based on democratic principles. 
 
-Running the app
+Using Pay.Party, A user can create and fund a pay.party election, assigning candidate and voter roles to any number of Ethereum addresses. Address participants can vote on their peers to determine the compensation distribution from the elections funding pool. 
 
-1. install your dependencies
+When a pay.party has ended, the funds are distributed to each candidate based on the election outcome, and users are notified of their dispersement.. 
 
-   ```bash
-   yarn install
-   ```
+### How it works
 
-2. start a hardhat node
+Upon creating a pay.party election, a creator adds participants by assigning any number of addresses a voter and/or candidate role, the election funding token and amount, the number of votes every voter gets, and other related metadata (name, description, etc.). If an address has a _voter_ role, the address participates by voting on candidates. If, however, an address has a _candidate_ role, the address participates by voting _and_ being voted on in which case they may receive a portion of the election pool's funding. 
 
-   ```bash
-   yarn chain
-   ```
 
-3. run the app, `you'll need to open a new command prompt`
+## Product Roadmap
 
-   ```bash
-   yarn deploy
-   yarn start
-   ```
+pay.party has gone through _many_ iterations, and that probably won't stop for some time. Below, I propose a few key features I'd like to see us put resources toward.
 
-## Overview
+- [ ] Rebrand to pay.party 
+    - This is mostly aesthetic; however, myself and a few members of the team think it would be best to preserve the old quadratic-diplomacy repo and start a new repo under moonshotcollective/pay.party. This would avoid any Github and CI/CD headaches. 
+- [ ] Typescript 
+    - If you’re unfamiliar with TypeScript, it’s a language that builds on JavaScript by adding syntax for type declarations and annotations. Utilizing the scaffold-eth-typescript template is a great way to test and expand the scaffold-eth ecosystem and could help mitigate many issues we've faced in the past.  
+- [ ] Voting Stratagies
+    - With the rebranding effort, pay.party is no longer tied to the "quadratic lands"! This allows us to implement any number of vote distribution strategies. For example, in some cases, linear voting might make more sense than quadratic voting. In the future, it may even be reasonable to allow users to create their own distribution curves. 
+- [ ] Contract 2.0
+    - The v1 contract currently deployed on mainnet, matic, and testnets are complicated... too complicated. It was made this way for old requirements and a flexible product fit. This is no longer the case, and maintaining the current version is more of a liability than it is worth. The new contracts should be simple, allow escrow pool funding and non-escrow funding. 
+- [ ] Deploy contracts on L2s
+    - Polygon, Arbitrum, xDai, as well as Mainnet
+- [ ] Improved Backend Integration
+    - Currently, the deployment relies on the Ceramic network for the "database" and voting mechanics. While this approach is "decentralized", it does not come without additional headaches friction, like having a 3ID on ceramic or connecting/signing extra services, as well as the API support. I propose we move to an alternative, like IPFS with Infura pinging, and possibly look beyond the "decentralized" narrative. 
+- [ ] Connect  to CPK 
+    - Connect the navigation to the rest of [the CPK](https://gist.github.com/owocki/6c970c1532d8ba05368f31ac336ad934) and deploy to L2s that the other CPKs use.
+- [ ] User Testing
+     - Test with Moonshot Collective + MMM + at least one other workstream or DAO.  Incremental tickets may fall out of this.
+- [ ] Contributor graphics
+     - add in contributor graphs like https://twitter.com/bradwmorris/status/1465905469818490883?s=21
 
-> everything you need to build on Ethereum! 🚀
+## External Links
 
-🧪 Quickly experiment with Solidity using a frontend that adapts to your smart contract:
-
-![image](https://user-images.githubusercontent.com/2653167/124158108-c14ca380-da56-11eb-967e-69cde37ca8eb.png)
-
-# 🏄‍♂️ Building on scaffold-eth-typescript
-
-Prerequisites: [Node](https://nodejs.org/en/download/) plus [Yarn](https://classic.yarnpkg.com/en/docs/install/) and [Git](https://git-scm.com/downloads)
-
-> clone/fork 🏗 scaffold-eth:
-
-```bash
-git clone https://github.com/austintgriffith/scaffold-eth.git
-```
-
-> install and start your 👷‍ Hardhat chain:
-
-```bash
-yarn install
-yarn chain
-```
-
-> in a second terminal window, start your 📱 frontend:
-
-```bash
-yarn start
-```
-
-> in a third terminal window, 🛰 deploy your contract:
-
-```bash
-yarn compile
-yarn deploy
-```
-
-🔏 Edit your smart contract `YourContract.sol` in `packages/hardhat/contracts`
-
-📝 Edit your frontend `App.jsx` in `packages/react-app/src`
-
-💼 Edit your deployment scripts in `packages/hardhat/deploy`
-
-📱 Open http://localhost:3000 to see the app
-
-# 📚 Documentation
-
-Documentation, tutorials, challenges, and many more resources, visit: [docs.scaffoldeth.io](https://docs.scaffoldeth.io)
-
-# 🔭 Learning Solidity
-
-📕 Read the docs: https://docs.soliditylang.org
-
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
-
--  [Primitive Data Types](https://solidity-by-example.org/primitives/)
--  [Mappings](https://solidity-by-example.org/mapping/)
--  [Structs](https://solidity-by-example.org/structs/)
--  [Modifiers](https://solidity-by-example.org/function-modifier/)
--  [Events](https://solidity-by-example.org/events/)
--  [Inheritance](https://solidity-by-example.org/inheritance/)
--  [Payable](https://solidity-by-example.org/payable/)
--  [Fallback](https://solidity-by-example.org/fallback/)
-
-📧 Learn the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.6.6/units-and-global-variables.html)
-
-# 🛠 Buidl
-
-Check out all the [active branches](https://github.com/austintgriffith/scaffold-eth/branches/active), [open issues](https://github.com/austintgriffith/scaffold-eth/issues), and join/fund the 🏰 [BuidlGuidl](https://BuidlGuidl.com)!
-
--  🚤 [Follow the full Ethereum Speed Run](https://medium.com/@austin_48503/%EF%B8%8Fethereum-dev-speed-run-bd72bcba6a4c)
-
--  🎟 [Create your first NFT](https://github.com/austintgriffith/scaffold-eth/tree/simple-nft-example)
--  🥩 [Build a staking smart contract](https://github.com/austintgriffith/scaffold-eth/tree/challenge-1-decentralized-staking)
--  🏵 [Deploy a token and vendor](https://github.com/austintgriffith/scaffold-eth/tree/challenge-2-token-vendor)
--  🎫 [Extend the NFT example to make a "buyer mints" marketplace](https://github.com/austintgriffith/scaffold-eth/tree/buyer-mints-nft)
--  🎲 [Learn about commit/reveal](https://github.com/austintgriffith/scaffold-eth/tree/commit-reveal-with-frontend)
--  ✍️ [Learn how ecrecover works](https://github.com/austintgriffith/scaffold-eth/tree/signature-recover)
--  👩‍👩‍👧‍👧 [Build a multi-sig that uses off-chain signatures](https://github.com/austintgriffith/scaffold-eth/tree/meta-multi-sig)
--  ⏳ [Extend the multi-sig to stream ETH](https://github.com/austintgriffith/scaffold-eth/tree/streaming-meta-multi-sig)
--  ⚖️ [Learn how a simple DEX works](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90)
--  🦍 [Ape into learning!](https://github.com/austintgriffith/scaffold-eth/tree/aave-ape)
-
-# 💬 Support Chat
-
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
-
----
-
-🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!

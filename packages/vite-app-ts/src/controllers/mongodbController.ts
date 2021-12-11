@@ -4,9 +4,8 @@ import HttpController from '~~/controllers/httpController';
 
 export default class MongoDBController {
   http = new HttpController();
-  async newParty(d: JSON): Promise<AxiosResponse> {
+  async newParty(d: any): Promise<AxiosResponse> {
     const url = 'http://localhost:8080/party';
-    console.log('newParty');
     return this.http.post(url, {}, d); // Clean this up
   }
   async fetchAllParties(): Promise<AxiosResponse> {
