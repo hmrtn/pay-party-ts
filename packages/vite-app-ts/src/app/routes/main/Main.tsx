@@ -64,12 +64,12 @@ export const Main: FC = () => {
   // -----------------------------
   // example for current contract and listners
   // -----------------------------
-  const distributorRead = readContracts['Distributor'] as Distributor;
+  // const distributorRead = readContracts['Distributor'] as Distributor;
   // keep track of a variable from the contract in the local React state:
-  const purpose = useContractReader<string>(distributorRead, {
-    contractName: 'Distributor',
-    functionName: 'purpose',
-  });
+  // const purpose = useContractReader<string>(distributorRead, {
+  //   contractName: 'Distributor',
+  //   functionName: 'purpose',
+  // });
 
   // 📟 Listen for broadcast events
   // const setPurposeEvents = useEventListener(distributorRead, 'SetPurpose', 1);
@@ -92,7 +92,7 @@ export const Main: FC = () => {
   // .... 🎇 End of examples
   // -----------------------------
 
-  const [route, setRoute] = useState<string>('');
+  const [route, setRoute] = useState<string>('/');
   useEffect(() => {
     setRoute(window.location.pathname);
   }, [setRoute]);

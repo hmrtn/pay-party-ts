@@ -6,7 +6,8 @@ export default class MongoDBController {
   http = new HttpController();
   async newParty(d: any): Promise<AxiosResponse> {
     const url = 'http://localhost:8080/party';
-    return this.http.post(url, {}, d); // Clean this up
+    const party = { ...d, ballots: [] };
+    return this.http.post(url, {}, party); // Clean this up
   }
   async fetchAllParties(): Promise<AxiosResponse> {
     const url = 'http://localhost:8080/party';

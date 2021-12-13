@@ -66,6 +66,10 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: "string",
           description: "'participants' is a comma seperated string",
         },
+        ballots: {
+          bsonType: "array",
+          description: "'ballots' is an array of ballot objects",
+        },
       },
     },
   };
