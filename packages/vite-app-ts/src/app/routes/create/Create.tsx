@@ -1,10 +1,10 @@
 import { Button, Form, Card, Input, Select, InputNumber, Space } from 'antd';
 import { FC } from 'react';
+import { Party } from '~~/models/PartyModels';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
 const { Option } = Select;
 const { TextArea } = Input;
-
 export interface CreateProps {
   mainnetProvider: StaticJsonRpcProvider;
   yourCurrentBalance: any;
@@ -12,6 +12,7 @@ export interface CreateProps {
 }
 
 export const Create: FC<CreateProps> = (props) => {
+  const db = new MongoDBController();
   const handleStrategyChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -19,17 +20,21 @@ export const Create: FC<CreateProps> = (props) => {
     console.log(`selected ${value}`);
   };
 
-  interface Ballot {}
-  interface Voter {
-    address: string;
-    ballot: Ballot;
-  }
-
   const onFinish = async (values: any) => {
-    console.log(values);
-    const votersStruct = {};
-    const db = new MongoDBController();
-    db.newParty(values);
+    const party: Party = {
+      name: values.name,
+      desc: values.desc,
+      fund: {
+        amount: values.fundAmount,
+        token: values.fundType,
+      },
+      strategy: values.strategy,
+      participants: values.participants.split(','),
+      candidates: [],
+      ballots: [],
+    };
+    console.log(party);
+    db.newParty(party);
   };
 
   const onFinishFailed = (err: any) => {

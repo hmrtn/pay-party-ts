@@ -1,14 +1,12 @@
-import { Button, Card, Space } from 'antd';
-import React, { FC, useContext, useEffect, useState, useMemo } from 'react';
+import { Button, Card, Space, Input } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { transactor } from 'eth-components/functions';
-import { isCommunityResourcable, StaticJsonRpcProvider } from '@ethersproject/providers';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { useEthersContext } from 'eth-hooks/context';
-import { useGasPrice } from 'eth-hooks';
-import { EthComponentsSettingsContext } from 'eth-components/models';
 import MongoDBController from '~~/controllers/mongodbController';
-import { ethers } from 'ethers';
-
+import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer';
+import { Ballot, Votes } from '~~/models/PartyModels';
+const { TextArea } = Input;
 export interface PartyProps {
   mainnetProvider: StaticJsonRpcProvider;
   yourCurrentBalance: any;
@@ -20,89 +18,87 @@ export interface PartyProps {
 export const Party: FC<PartyProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const ethersContext = useEthersContext();
-
-  const ethComponentsSettings = useContext(EthComponentsSettingsContext);
-  const gasPrice = useGasPrice(ethersContext.chainId, 'fast');
-  const tx = transactor(ethComponentsSettings, ethersContext?.signer, gasPrice);
-
-  const [data, setData] = useState<any | null>(null);
+  const [partyData, setPartyData] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [votesData, setVotesData] = useState<Votes | null>(null);
 
   const db = new MongoDBController();
 
   useEffect(() => {
     db.fetchParty(id)
       .then((res: any) => {
-        console.log(res.data);
-        setData(res.data);
+        setPartyData(res.data);
       })
       .catch((err: any) => {
         console.log(err);
-        // setData()
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
-  const vote = async (party: any) => {
-    // EIP 712
-    const domain = {
-      name: import.meta.env.VITE_APP_NAME,
+  const handleVotesChange = (e: any) => {
+    const value: string = e.target.value;
+    try {
+      const parsedVotes: Votes = JSON.parse(value);
+      setVotesData(parsedVotes);
+    } catch (error) {
+      console.log('Formatted JSON Required');
+    }
+  };
+
+  const vote = async () => {
+    // EIP-712 Typed Data
+    // See: https://eips.ethereum.org/EIPS/eip-712
+    const domain: TypedDataDomain = {
+      name: 'pay-party',
       version: '1',
       chainId: ethersContext.chainId,
       verifyingContract: props.readContracts.Distributor.address,
     };
-
-    const types = {
-      Vote: [
-        // { name: 'from', type: 'User' },
-        { name: 'ballot', type: 'string' },
-        // { name: 'chainId', type: 'number' },
+    const types: Record<string, Array<TypedDataField>> = {
+      Party: [
+        { name: 'party', type: 'string' },
+        { name: 'ballot', type: 'Ballot' },
       ],
-      // User: [{ name: 'wallet', type: 'address' }],
+      Ballot: [
+        { name: 'address', type: 'address' },
+        { name: 'votes', type: 'string' },
+      ],
     };
 
-    const ballot = {
-      // from: {
-      //   wallet: '0x1111111111111111111111111111111111111100',
-      // },
-      ballot: JSON.stringify({ addr1: 1, addr2: 5, addr3: 3 }),
-      // chainId: ethersContext.chainId,
-      // timestamp: ethers.block.number,
+    const ballot: Ballot = {
+      party: partyData.name,
+      ballot: {
+        address: ethersContext.account,
+        votes: JSON.stringify(votesData),
+      },
     };
-    // End EIP 712
 
-    // EIP-712 Typed Data
-    // See: https://eips.ethereum.org/EIPS/eip-712
+    // NOTE: sign typed data for eip712 is underscored because it's in public beta
     ethersContext.signer
-      ?._signTypedData(domain, types, ballot)
+      ._signTypedData(domain, types, ballot)
       .then((sig: string) => {
-        party.ballots.push({ account: ethersContext.account, signature: sig, ballot: ballot });
-        console.log(party);
+        const ballots = partyData.ballots;
+        // Push a ballot to the parties sumbitted ballots array
+        ballots.push({ signature: sig, data: ballot });
+        return ballots;
+      })
+      .then((ballots: Ballot[]) => {
+        db.updateParty(partyData._id, { ballots: ballots });
       })
       .catch((err: any) => {
         console.log(err);
-      })
-      .finally(() => {
-        console.log(party);
-        ethers.utils.verifyMessage(party.ballots[0].signature, party.ballots[0].ballot.ballot);
-        // console.log(verifyVote());
       });
-    // console.log(ethersContext);
-    // console.log(party);
-  };
-
-  const verifyVote = (msg: string, sig: string) => {
-    ethers.utils.verifyMessage(msg, sig);
   };
 
   return (
     <div style={{ padding: 24 }}>
       <Space align="center">
         <Card title={id} loading={loading} style={{ minWidth: '324px', maxWidth: '80vw', width: '80vw' }}>
-          {JSON.stringify(data)}
-          <Button onClick={() => vote(data)}>Vote Sign Test</Button>
+          {JSON.stringify(partyData, null, '\t')}
+          <TextArea rows={3} onChange={handleVotesChange} />
+          <Button onClick={vote}>Vote</Button>
         </Card>
       </Space>
     </div>
