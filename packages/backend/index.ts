@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { connectToDatabase } from "./services/database.service";
-import { partyRouter } from "./routes/party.router";
+import { connectToDatabase } from "./services/databaseService";
+import { partyRouter } from "./routes/partyRouter";
 
 const app = express();
 const port = 8080; // default port to listen

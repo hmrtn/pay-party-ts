@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
-import { collections } from "../services/database.service";
+import { collections } from "../services/databaseService";
 import PartyObject from "../../vite-app-ts/src/models/PartyModels";
 
 export const partyRouter = express.Router();
