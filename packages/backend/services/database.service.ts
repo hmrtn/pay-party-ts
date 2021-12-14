@@ -1,7 +1,5 @@
-import { Express as ExpressApp } from "express";
 import * as mongoDB from "mongodb";
 import * as dotenv from "dotenv";
-import { env } from "process";
 
 export const collections: { parties?: mongoDB.Collection } = {};
 
@@ -50,21 +48,27 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: "string",
           description: "'desc' is required and is a string",
         },
-        fundAmount: {
-          bsonType: "number",
-          description: "'fundAmount' is a number",
-        },
-        fundType: {
-          bsonType: "string",
-          description: "'fundType' is a string",
+        fund: {
+          bsonType: "object",
+          properties: {
+            amount: {
+              bsonType: "number",
+            },
+            token: {
+              bsonType: "string",
+            },
+          },
         },
         strategy: {
           bsonType: "string",
           description: "'strategy' is a string",
         },
         participants: {
-          bsonType: "string",
+          bsonType: "array",
           description: "'participants' is a comma seperated string",
+        },
+        candidates: {
+          bsonType: "array",
         },
         ballots: {
           bsonType: "array",

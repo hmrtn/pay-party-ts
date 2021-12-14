@@ -1,20 +1,18 @@
 import { ObjectId } from "mongodb";
+import { Ballot, Party } from "../../vite-app-ts/src/models/PartyModels";
 
-export default class Party {
+export default class PartyObject implements Party {
   constructor(
-    public verion: number,
-    public created: string,
-    public name: string,
-    public desc: string,
-    public fund: {
-      type: string;
+    public name?: string,
+    public desc?: string,
+    public fund?: {
       amount: number;
+      token: string | null;
     },
-    public voter: {
-      address: string;
-    },
-    public price: number,
-    public category: string,
+    public strategy?: string,
+    public participants?: string[],
+    public candidates?: string[],
+    public ballots?: Ballot[],
     public id?: ObjectId
   ) {}
 }

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { collections } from "../services/database.service";
-import Party from "../models/party.model";
+import PartyObject from "../../vite-app-ts/src/models/PartyModels";
 
 export const partyRouter = express.Router();
 
@@ -12,7 +12,7 @@ partyRouter.get("/", async (_req: Request, res: Response) => {
     // Call find with an empty filter object, meaning it returns all documents in the collection. Saves as party array to take advantage of types
     const parties = (await collections.parties
       .find({})
-      .toArray()) as unknown as Party[];
+      .toArray()) as unknown as PartyObject[];
 
     res.status(200).send(parties);
   } catch (error) {
@@ -29,7 +29,7 @@ partyRouter.get("/:id", async (req: Request, res: Response) => {
     const query = { _id: new ObjectId(id) };
     const party = (await collections.parties.findOne(
       query
-    )) as unknown as Party;
+    )) as unknown as PartyObject;
 
     if (party) {
       res.status(200).send(party);
@@ -45,7 +45,7 @@ partyRouter.post("/", async (req: Request, res: Response) => {
   console.log("partyRouter POST!");
   try {
     console.log(req.body);
-    const newParty = req.body as Party;
+    const newParty = req.body as PartyObject;
     const result = await collections.parties.insertOne(newParty);
 
     result
@@ -63,7 +63,7 @@ partyRouter.put("/:id", async (req: Request, res: Response) => {
   const id = req?.params?.id;
 
   try {
-    const updatedParty: Party = req.body as Party;
+    const updatedParty: PartyObject = req.body as PartyObject;
     const query = { _id: new ObjectId(id) };
     // $set adds or updates all fields
     const result = await collections.parties.updateOne(query, {
