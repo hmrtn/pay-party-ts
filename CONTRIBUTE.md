@@ -8,9 +8,11 @@ packages/hardhat-ts/
 packages/backend/
 ```
 
+The project was created by members of the moonshot collective using the [scaffold-eth-typescript]() template repository.
+
 ## Quick Start
 
-Running the app
+Running the app requires setting up proper enviroment variables. See the `.sample.env` in the directories for more information.
 
 0. Navigate to the root directory after cloning the repository.
 
@@ -48,8 +50,6 @@ Running the app
    ```bash
    yarn start
    ```
-
-## Overview
 
 # 💬 Support Chat
 
