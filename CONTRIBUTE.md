@@ -12,7 +12,7 @@ The project was created by members of the moonshot collective using the [scaffol
 
 ## Quick Start
 
-Running the app requires setting up proper enviroment variables. See the `.sample.env` in the directories for more information.
+Running the app requires setting up proper enviroment variables, and node (<=v16.13.0). See the `.sample.env` in the directories for more information on creating `.env`'s.
 
 0. Navigate to the root directory after cloning the repository.
 
