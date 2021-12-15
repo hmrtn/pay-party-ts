@@ -2829,6 +2829,7 @@ __metadata:
     shx: ^0.3.3
     ts-node: ^10.4.0
     typescript: ^4.5.2
+    web3: ^1.6.1
   languageName: unknown
   linkType: soft
 
@@ -2865,6 +2866,7 @@ __metadata:
     "@typechain/hardhat": ^2.0.2
     "@types/isomorphic-fetch": ^0.0.35
     "@types/jest": ^27.0.2
+    "@types/jquery": ^3.5.10
     "@types/node": ^16.11.1
     "@types/pretty-time": ^1.1.1
     "@types/qrcode.react": ^1.0.2
@@ -2908,6 +2910,7 @@ __metadata:
     graphql: ^15.6.1
     history: ^5.0.0
     http-browserify: ^1.7.0
+    jquery: ^3.6.0
     less: ^4.1.2
     postcss: ^8.3.5
     prettier: ^2.4.1
@@ -3572,6 +3575,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jquery@npm:^3.5.10":
+  version: 3.5.10
+  resolution: "@types/jquery@npm:3.5.10"
+  dependencies:
+    "@types/sizzle": "*"
+  checksum: 8ac37fd113680bfe63748f28b438e4e0119342bdb5d7f94851a4178607b5c097a0b23bd2d17f9c390972a5d4c04247b5d1b806eb52b50ea1085b50629db8057d
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.7, @types/json-schema@npm:^7.0.9":
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
@@ -3894,6 +3906,13 @@ __metadata:
   dependencies:
     "@sinonjs/fake-timers": ^7.1.0
   checksum: 1c2ae7daa822014a558d513c1ae341aed676bfe678b9e48cf13a0ccc0eabc429f211371e8f10495d5eb156c0aedfeb3ad5253ebfe026fc14a5b77c461a6cea2a
+  languageName: node
+  linkType: hard
+
+"@types/sizzle@npm:*":
+  version: 2.3.3
+  resolution: "@types/sizzle@npm:2.3.3"
+  checksum: 586a9fb1f6ff3e325e0f2cc1596a460615f0bc8a28f6e276ac9b509401039dd242fa8b34496d3a30c52f5b495873922d09a9e76c50c2ab2bcc70ba3fb9c4e160
   languageName: node
   linkType: hard
 
@@ -14701,6 +14720,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jquery@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "jquery@npm:3.6.0"
+  checksum: 8fd5fef4aa48fd374ec716dd1c1df1af407814a228e15c1260ca140de3a697c2a77c30c54ff1d238b6a3ab4ddc445ddeef9adce6c6d28e4869d85eb9d3951c0e
+  languageName: node
+  linkType: hard
+
 "js-sha256@npm:0.9.0":
   version: 0.9.0
   resolution: "js-sha256@npm:0.9.0"
@@ -24852,7 +24878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3@npm:^1.5.2":
+"web3@npm:^1.5.2, web3@npm:^1.6.1":
   version: 1.6.1
   resolution: "web3@npm:1.6.1"
   dependencies:
