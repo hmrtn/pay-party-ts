@@ -1,6 +1,6 @@
 import { Button, Form, Card, Input, Select, InputNumber, Space } from 'antd';
-import { FC } from 'react';
-import { Party } from '~~/models/PartyModels';
+import { FC, useState } from 'react';
+import { PartyType } from '~~/models/PartyModels';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
 const { Option } = Select;
@@ -13,6 +13,7 @@ export interface CreateProps {
 
 export const Create: FC<CreateProps> = (props) => {
   const db = new MongoDBController();
+  const [loading, setLoading] = useState<boolean>(false);
   const handleStrategyChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -21,7 +22,8 @@ export const Create: FC<CreateProps> = (props) => {
   };
 
   const onFinish = async (values: any) => {
-    const party: Party = {
+    setLoading(true);
+    const party: PartyType = {
       name: values.name,
       desc: values.desc,
       fund: {
@@ -30,11 +32,12 @@ export const Create: FC<CreateProps> = (props) => {
       },
       strategy: values.strategy,
       participants: values.participants.split(','),
-      candidates: [],
+      candidates: values.candidates.split(','),
       ballots: [],
     };
-    console.log(party);
-    db.newParty(party);
+    db.newParty(party).then((d: any) => {
+      setLoading(false);
+    });
   };
 
   const onFinishFailed = (err: any) => {
@@ -62,12 +65,8 @@ export const Create: FC<CreateProps> = (props) => {
             <Form.Item label="Funding" name="fundAmount" rules={[{ required: true, message: 'Funding Required.' }]}>
               <InputNumber placeholder="0.01" />
             </Form.Item>
-            <Form.Item label="Type" name="fundType" rules={[{ required: true, message: 'Funding Type Required.' }]}>
-              <Select style={{ width: 120 }} onChange={handleTypeChange}>
-                <Option value="ETH">ETH</Option>
-                <Option value="DAI">DAI</Option>
-                <Option value="GTC">GTC</Option>
-              </Select>
+            <Form.Item label="Type" name="fundType" rules={[{ required: false, message: 'Leave blank for ETH' }]}>
+              <TextArea rows={3} placeholder="ERC-20 Address" />
             </Form.Item>
             <Form.Item label="Strategy" name="strategy" rules={[{ required: true, message: 'Strategy Required.' }]}>
               <Select style={{ width: 120 }} onChange={handleStrategyChange}>
@@ -79,10 +78,16 @@ export const Create: FC<CreateProps> = (props) => {
               label="Participants"
               name="participants"
               rules={[{ required: true, message: 'Particpant(s) Required.' }]}>
-              <TextArea rows={3} placeholder="Address/ENS" />
+              <TextArea rows={3} placeholder="0x00..., 0x01..., ..." />
+            </Form.Item>
+            <Form.Item
+              label="Candidates"
+              name="candidates"
+              rules={[{ required: true, message: 'Candidate(s) Required.' }]}>
+              <TextArea rows={3} placeholder="0x00..., 0x01..., ..." />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={loading}>
                 Submit
               </Button>
             </Form.Item>

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-export interface Party {
+export interface PartyType {
   name?: string;
   desc?: string;
   fund?: {
@@ -26,7 +26,7 @@ export interface Votes {
   n: number;
 }
 
-export default class PartyObject implements Party {
+export default class PartyObject implements PartyType {
   constructor(
     public name?: string,
     public desc?: string,

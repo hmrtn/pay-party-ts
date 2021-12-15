@@ -62,8 +62,6 @@ export const Home: FC<HomeProps> = (props) => {
               <Tag color="blue">Voter</Tag>
               <Tag color="volcano">Candidate</Tag>
               <p>{d.desc}</p>
-              <p>Card content</p>
-              <p>Card content</p>
             </Card>
           </div>
         </Space>

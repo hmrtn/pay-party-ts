@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import '~~/styles/main-page.css';
 import { useContractLoader, useBalance } from 'eth-hooks';
 import { useDexEthPrice } from 'eth-hooks/dapps';
-import { Home, Create } from '~~/app/routes';
+import { Home, Create, Party } from '~~/app/routes';
 import { MainPageMenu, MainPageContracts, MainPageFooter, MainPageHeader } from './components';
 import { useScaffoldProviders as useScaffoldAppProviders } from '~~/app/routes/main/hooks/useScaffoldAppProviders';
 import { useBurnerFallback } from '~~/app/routes/main/hooks/useBurnerFallback';
@@ -11,7 +11,6 @@ import { useEthersContext } from 'eth-hooks/context';
 import { NETWORKS } from '~~/models/constants/networks';
 import { mainnetProvider } from '~~/config/providersConfig';
 import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
-import { Party } from '../party/Party';
 
 export const DEBUG = false;
 
@@ -121,6 +120,7 @@ export const Main: FC = () => {
               price={ethPrice}
               setRoute={setRoute}
               readContracts={readContracts}
+              writeContracts={writeContracts}
             />
           </Route>
         </Switch>
