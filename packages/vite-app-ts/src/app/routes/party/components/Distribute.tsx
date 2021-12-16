@@ -68,25 +68,25 @@ export const Distribute: FC<DistributeProps> = (props) => {
 
   return (
     <div style={{ padding: 24 }}>
-      <Space align="center">
-        <Form onFinish={loadToken}>
-          <Form.Item name="token" label="ERC20">
-            <TextArea placeholder="token address"></TextArea>
-          </Form.Item>
-          <FormItem>
-            <Button htmlType="submit">Load Token</Button>
-          </FormItem>
-        </Form>
-        <Form>
-          <Form.Item name="amount" label="Amount" rules={[{ required: true, message: 'Amount Required.' }]}>
-            <TextArea placeholder="1, 1, 3, ..." onChange={handleAmountChange}></TextArea>
-          </Form.Item>
-          <FormItem>
-            <Button onClick={approve}>Approve</Button>
-            <Button onClick={distribute}>Distribute</Button>
-          </FormItem>
-        </Form>
-      </Space>
+      <Form onFinish={loadToken}>
+        <Form.Item name="token" label="ERC20">
+          <TextArea placeholder="token address"></TextArea>
+        </Form.Item>
+        <FormItem>
+          <Button htmlType="submit">Load Token</Button>
+        </FormItem>
+      </Form>
+      <Form>
+        <Form.Item name="amount" label="Amount" rules={[{ required: true, message: 'Amount Required.' }]}>
+          <TextArea placeholder="1, 1, 3, ..." onChange={handleAmountChange}></TextArea>
+        </Form.Item>
+      </Form>
+      <Form>
+        <FormItem>
+          <Button onClick={approve}>Approve</Button>
+          <Button onClick={distribute}>Distribute</Button>
+        </FormItem>
+      </Form>
     </div>
   );
 };

@@ -31,8 +31,8 @@ export const Create: FC<CreateProps> = (props) => {
         token: values.fundType,
       },
       strategy: values.strategy,
-      participants: values.participants.split(','),
-      candidates: values.candidates.split(','),
+      participants: values.participants.split(/[ ,]+/),
+      candidates: values.candidates.split(/[ ,]+/),
       ballots: [],
     };
     db.newParty(party).then((d: any) => {
