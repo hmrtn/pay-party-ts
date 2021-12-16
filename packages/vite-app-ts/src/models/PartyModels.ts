@@ -1,10 +1,11 @@
+import { BigNumber } from 'ethers';
 import { ObjectId } from 'mongodb';
 
 export interface Reciept {
-  account: string;
-  amount: string;
-  token: string | null;
-  timestamp: string;
+  account: string | undefined;
+  amount: BigNumber | undefined;
+  token: string | undefined;
+  txn: string | undefined;
 }
 
 export interface PartyType {

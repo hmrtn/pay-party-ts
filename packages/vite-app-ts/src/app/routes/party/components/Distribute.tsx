@@ -1,4 +1,4 @@
-import { Button, Space, Input, Form } from 'antd';
+import { Button, Input, Form } from 'antd';
 import { FC, useState } from 'react';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { useEthersContext } from 'eth-hooks/context';
@@ -6,6 +6,8 @@ import { toWei } from 'web3-utils';
 import { BigNumber, ContractInterface, ethers } from 'ethers';
 import $ from 'jquery';
 import FormItem from 'antd/lib/form/FormItem';
+import MongoDBController from '~~/controllers/mongodbController';
+import { Reciept } from '~~/models/PartyModels';
 const { TextArea } = Input;
 export interface DistributeProps {
   partyData: any;
@@ -22,6 +24,8 @@ export const Distribute: FC<DistributeProps> = (props) => {
   const [tokenInstance, setTokenInstance] = useState<ethers.Contract | null>(null);
   const [amounts, setAmounts] = useState<BigNumber>();
   const [total, setTotal] = useState<BigNumber>();
+
+  const db = new MongoDBController();
 
   const loadToken = async (values: any) => {
     $.getJSON(
@@ -57,13 +61,26 @@ export const Distribute: FC<DistributeProps> = (props) => {
   };
 
   const distribute = async () => {
-    if (tokenInstance) {
-      props.writeContracts.Distributor.distributeToken(tokenInstance?.address, props.partyData.candidates, amounts);
-    } else {
-      props.writeContracts.Distributor.distributeEther(props.partyData.candidates, amounts, {
-        value: total,
-      });
-    }
+    // Distribute the funds
+    const res = tokenInstance
+      ? await props.writeContracts.Distributor.distributeToken(
+          tokenInstance?.address,
+          props.partyData.candidates,
+          amounts
+        )
+      : await props.writeContracts.Distributor.distributeEther(props.partyData.candidates, amounts, {
+          value: total,
+        });
+    await res.wait(2);
+    // Update the reciepts
+    const reciept: Reciept = {
+      account: ethersContext.account,
+      amount: total,
+      token: tokenInstance?.address,
+      txn: res.hash,
+    };
+    const reciepts = props.partyData.reciepts;
+    db.updateParty(props.partyData._id, { reciepts: [...reciepts, reciept] });
   };
 
   return (

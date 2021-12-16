@@ -24,7 +24,7 @@ connectToDatabase()
       })
     );
 
-    // send all calls to /parties to our partyRouter
+    // send all calls to /party to our partyRouter
     app.use("/party", partyRouter);
 
     // start the Express server
