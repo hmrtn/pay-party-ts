@@ -55,9 +55,3 @@ export const Party: FC<PartyProps> = (props) => {
     </div>
   );
 };
-
-// mainnetProvider: StaticJsonRpcProvider;
-// yourCurrentBalance: any;
-// price: number;
-// setRoute: React.Dispatch<React.SetStateAction<string>>;
-// readContracts: any;
