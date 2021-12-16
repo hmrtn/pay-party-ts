@@ -59,10 +59,10 @@ export const Create: FC<CreateProps> = (props) => {
             <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Name Required.' }]}>
               <Input placeholder="Party Name" />
             </Form.Item>
-            <Form.Item label="Description" name="desc" rules={[{ required: true, message: 'Description Required.' }]}>
+            <Form.Item label="Description" name="desc" rules={[{ required: false, message: 'Description Required.' }]}>
               <TextArea rows={3} placeholder="Describe the party" />
             </Form.Item>
-            <Form.Item label="Funding" name="fundAmount" rules={[{ required: true, message: 'Funding Required.' }]}>
+            <Form.Item label="Funding" name="fundAmount" rules={[{ required: false, message: 'Funding Required.' }]}>
               <InputNumber placeholder="0.01" />
             </Form.Item>
             <Form.Item label="Type" name="fundType" rules={[{ required: false, message: 'Leave blank for ETH' }]}>
