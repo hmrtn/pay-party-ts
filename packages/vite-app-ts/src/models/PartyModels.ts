@@ -20,7 +20,6 @@ export interface PartyType {
 
 export interface Ballot {
   party: string;
-  timestamp: string;
   ballot: {
     address: string | undefined;
     votes: string; // Stringified Votes type
