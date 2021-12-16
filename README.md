@@ -16,4 +16,13 @@ Upon creating a pay.party election, a creator adds participants by assigning any
 
 ## Contributing
 
+### Guide
+
 Please see the contributing document.
+
+### Branches
+
+MC maintains two permanent branches:
+
+- master: This points to the latest stable release. It is ideal for most users.
+- develop: This is used for development, it contains the latest PRs. Developers should base their PRs on this branch.
