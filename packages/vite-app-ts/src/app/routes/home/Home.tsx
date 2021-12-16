@@ -1,11 +1,7 @@
 import { Card, Tag, Space } from 'antd';
-import React, { FC, useContext, useEffect, useState, useMemo } from 'react';
+import React, { FC, useEffect, useState, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { transactor } from 'eth-components/functions';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { useEthersContext } from 'eth-hooks/context';
-import { useGasPrice } from 'eth-hooks';
-import { EthComponentsSettingsContext } from 'eth-components/models';
 import MongoDBController from '~~/controllers/mongodbController';
 
 export interface HomeProps {
@@ -16,12 +12,6 @@ export interface HomeProps {
 }
 
 export const Home: FC<HomeProps> = (props) => {
-  const ethersContext = useEthersContext();
-
-  const ethComponentsSettings = useContext(EthComponentsSettingsContext);
-  const gasPrice = useGasPrice(ethersContext.chainId, 'fast');
-  const tx = transactor(ethComponentsSettings, ethersContext?.signer, gasPrice);
-
   const [data, setData] = useState<any | null>(null);
 
   const db = new MongoDBController();
@@ -61,39 +51,13 @@ export const Home: FC<HomeProps> = (props) => {
               <Tag color="green">Active</Tag>
               <Tag color="blue">Voter</Tag>
               <Tag color="volcano">Candidate</Tag>
-              <p>{d.desc}</p>
+              <p>{d.description}</p>
             </Card>
           </div>
         </Space>
       ))
     );
   }, [data]);
-
-  const exampleCard = (
-    // <Space size={[8, 16]} align="baseline" wrap>
-    <div style={{ padding: 16 }}>
-      <Card
-        title="Example Party"
-        extra={
-          <Link
-            to={`/party/0x000example`}
-            onClick={() => {
-              props.setRoute(`/party/0x000example`);
-            }}>
-            View
-          </Link>
-        }
-        style={{ width: 324 }}>
-        <Tag color="green">Active</Tag>
-        <Tag color="blue">Voter</Tag>
-        <Tag color="volcano">Candidate</Tag>
-        <p>Example Party Description</p>
-        <p>Card content</p>
-        <p>Card content</p>
-      </Card>
-    </div>
-    // </Space>
-  );
 
   return (
     <div style={{ padding: 24 }}>
@@ -107,7 +71,6 @@ export const Home: FC<HomeProps> = (props) => {
         </Link>
       </div>
       {cards}
-      {/* {exampleCard} */}
     </div>
   );
 };

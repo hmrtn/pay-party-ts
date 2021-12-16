@@ -32,11 +32,19 @@ export async function connectToDatabase() {
   );
 }
 // Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Game model, even if added elsewhere.
+// ********** FINISH THIS **************
 async function applySchemaValidation(db: mongoDB.Db) {
   const jsonSchema = {
     $jsonSchema: {
       bsonType: "object",
-      required: ["name", "desc"],
+      required: [
+        "name",
+        "description",
+        "reciepts",
+        "participants",
+        "candidates",
+        "ballots",
+      ],
       additionalProperties: false,
       properties: {
         _id: {},
@@ -44,20 +52,13 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: "string",
           description: "'name' is required and is a string",
         },
-        desc: {
+        description: {
           bsonType: "string",
-          description: "'desc' is required and is a string",
+          description: "'description' is required and is a string",
         },
-        fund: {
-          bsonType: "object",
-          properties: {
-            amount: {
-              bsonType: "number",
-            },
-            token: {
-              bsonType: "string",
-            },
-          },
+        reciepts: {
+          bsonType: "array",
+          description: "recipets is th pay-out recipets.",
         },
         strategy: {
           bsonType: "string",

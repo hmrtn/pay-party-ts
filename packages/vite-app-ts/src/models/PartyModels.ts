@@ -1,12 +1,16 @@
 import { ObjectId } from 'mongodb';
 
+export interface Reciept {
+  account: string;
+  amount: string;
+  token: string | null;
+  timestamp: string;
+}
+
 export interface PartyType {
   name?: string;
-  desc?: string;
-  fund?: {
-    amount: number;
-    token: string | null;
-  };
+  description?: string;
+  reciepts?: Reciept[];
   strategy?: string;
   participants?: string[];
   candidates?: string[];
@@ -15,6 +19,7 @@ export interface PartyType {
 
 export interface Ballot {
   party: string;
+  timestamp: string;
   ballot: {
     address: string | undefined;
     votes: string; // Stringified Votes type
@@ -29,11 +34,8 @@ export interface Votes {
 export default class PartyObject implements PartyType {
   constructor(
     public name?: string,
-    public desc?: string,
-    public fund?: {
-      amount: number;
-      token: string | null;
-    },
+    public description?: string,
+    public reciepts?: Reciept[],
     public strategy?: string,
     public participants?: string[],
     public candidates?: string[],

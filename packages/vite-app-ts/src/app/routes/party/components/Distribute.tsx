@@ -25,9 +25,9 @@ export const Distribute: FC<DistributeProps> = (props) => {
 
   const loadToken = async (values: any) => {
     $.getJSON(
-      `https://api.etherscan.io/api?module=contract&action=getabi&address=${
-        values.token
-      }&${'F6XRF2BSH21RAD2YBJC6HQFJEPDV845DBQ'}`,
+      `https://api.etherscan.io/api?module=contract&action=getabi&address=${values.token}&${
+        import.meta.env.VITE_APP_ETHERSCAN_KEY
+      }`,
       (data: any) => {
         const contractABI: ContractInterface = JSON.parse(data.result);
         var contractInstance = new ethers.Contract(values.token, contractABI, ethersContext.signer);

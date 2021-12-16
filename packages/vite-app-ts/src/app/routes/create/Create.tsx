@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { PartyType } from '~~/models/PartyModels';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
+import { useEthersContext } from 'eth-hooks/context';
 const { Option } = Select;
 const { TextArea } = Input;
 export interface CreateProps {
@@ -13,6 +14,7 @@ export interface CreateProps {
 
 export const Create: FC<CreateProps> = (props) => {
   const db = new MongoDBController();
+  const ethersContext = useEthersContext();
   const [loading, setLoading] = useState<boolean>(false);
   const handleStrategyChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -25,18 +27,17 @@ export const Create: FC<CreateProps> = (props) => {
     setLoading(true);
     const party: PartyType = {
       name: values.name,
-      desc: values.desc,
-      fund: {
-        amount: values.fundAmount,
-        token: values.fundType,
-      },
+      description: values.description,
+      reciepts: [],
       strategy: values.strategy,
       participants: values.participants.split(/[ ,]+/),
       candidates: values.candidates.split(/[ ,]+/),
       ballots: [],
     };
-    db.newParty(party).then((d: any) => {
-      setLoading(false);
+    ethersContext.signer?.signMessage('Create Party').then(() => {
+      db.newParty(party).then((d: any) => {
+        setLoading(false);
+      });
     });
   };
 
@@ -59,14 +60,11 @@ export const Create: FC<CreateProps> = (props) => {
             <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Name Required.' }]}>
               <Input placeholder="Party Name" />
             </Form.Item>
-            <Form.Item label="Description" name="desc" rules={[{ required: false, message: 'Description Required.' }]}>
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[{ required: false, message: 'Description Required.' }]}>
               <TextArea rows={3} placeholder="Describe the party" />
-            </Form.Item>
-            <Form.Item label="Funding" name="fundAmount" rules={[{ required: false, message: 'Funding Required.' }]}>
-              <InputNumber placeholder="0.01" />
-            </Form.Item>
-            <Form.Item label="Type" name="fundType" rules={[{ required: false, message: 'Leave blank for ETH' }]}>
-              <TextArea rows={3} placeholder="ERC-20 Address" />
             </Form.Item>
             <Form.Item label="Strategy" name="strategy" rules={[{ required: true, message: 'Strategy Required.' }]}>
               <Select style={{ width: 120 }} onChange={handleStrategyChange}>
