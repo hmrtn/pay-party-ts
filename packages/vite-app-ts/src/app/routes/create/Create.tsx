@@ -1,6 +1,6 @@
 import { Button, Form, Card, Input, Select, InputNumber, Space } from 'antd';
 import { FC, useState } from 'react';
-import { PartyType } from '~~/models/PartyModels';
+import { Config, PartyType, Receipt } from '~~/models/PartyModels';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import MongoDBController from '~~/controllers/mongodbController';
 import { useEthersContext } from 'eth-hooks/context';
@@ -25,11 +25,17 @@ export const Create: FC<CreateProps> = (props) => {
 
   const onFinish = async (values: any) => {
     setLoading(true);
+
+    const configuration: Config = {
+      strategy: values.strategy,
+      nvotes: values.nvotes,
+    };
+
     const party: PartyType = {
       name: values.name,
       description: values.description,
-      reciepts: [],
-      strategy: values.strategy,
+      receipts: [],
+      config: configuration,
       participants: values.participants.split(/[ ,]+/),
       candidates: values.candidates.split(/[ ,]+/),
       ballots: [],
@@ -83,6 +89,13 @@ export const Create: FC<CreateProps> = (props) => {
               name="candidates"
               rules={[{ required: true, message: 'Candidate(s) Required.' }]}>
               <TextArea rows={3} placeholder="0x00..., 0x01..., ..." />
+            </Form.Item>
+            <Form.Item
+              label="Number of votes"
+              name="nvotes"
+              initialValue={10}
+              rules={[{ required: false, message: 'Number of votes' }]}>
+              <InputNumber />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               <Button type="primary" htmlType="submit" loading={loading}>

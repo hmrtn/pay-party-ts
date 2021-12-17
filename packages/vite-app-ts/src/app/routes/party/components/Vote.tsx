@@ -56,24 +56,24 @@ export const Vote: FC<VoteProps> = (props) => {
       },
     };
 
-    if (props.partyData.ballots.valueOf(ethersContext.account).length < 1) {
-      // Check if account has already submitted a ballot
-      // NOTE: sign typed data for eip712 is underscored because it's in public beta
-      ethersContext.signer
-        ?._signTypedData(domain, types, ballot)
-        .then((sig: string) => {
-          const ballots = props.partyData.ballots;
-          // Push a ballot to the parties sumbitted ballots array
-          ballots.push({ signature: sig, data: ballot });
-          return ballots;
-        })
-        .then((ballots: Ballot[]) => {
-          db.updateParty(props.partyData._id, { ballots: ballots });
-        })
-        .catch((err: any) => {
-          console.log(err);
-        });
-    }
+    // if (props.partyData.ballots.valueOf(ethersContext.account).length < 1) {
+    // Check if account has already submitted a ballot
+    // NOTE: sign typed data for eip712 is underscored because it's in public beta
+    ethersContext.signer
+      ?._signTypedData(domain, types, ballot)
+      .then((sig: string) => {
+        const ballots = props.partyData.ballots;
+        // Push a ballot to the parties sumbitted ballots array
+        ballots.push({ signature: sig, data: ballot });
+        return ballots;
+      })
+      .then((ballots: Ballot[]) => {
+        db.updateParty(props.partyData._id, { ballots: ballots });
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+    // }
   };
 
   return (
