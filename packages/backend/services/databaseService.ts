@@ -40,7 +40,7 @@ async function applySchemaValidation(db: mongoDB.Db) {
       required: [
         "name",
         "description",
-        "reciepts",
+        "receipts",
         "participants",
         "candidates",
         "ballots",
@@ -56,13 +56,13 @@ async function applySchemaValidation(db: mongoDB.Db) {
           bsonType: "string",
           description: "'description' is required and is a string",
         },
-        reciepts: {
+        receipts: {
           bsonType: "array",
-          description: "recipets is th pay-out recipets.",
+          description: "receipts is th pay-out recipets.",
         },
-        strategy: {
-          bsonType: "string",
-          description: "'strategy' is a string",
+        config: {
+          bsonType: "object",
+          description: "party configuration",
         },
         participants: {
           bsonType: "array",
